@@ -15,27 +15,38 @@ def get_subject_nii_file(s):
                     str(s['SUBJECT_ID']),
                     'session_1',
                     'anat_1',
-                    'anat.nii')
+                    'anat.nii.gz')
     return nii_path
 
 
-def process_subject(subject_series):
+def process_subject(row):
+    subject_series = row[1]  # Iterrows returns a tuple (idx, row)
     nii_file = get_subject_nii_file(subject_series)
-    sid = subject_series['SUBJECT_ID']
+    sid = str(subject_series['SUBJECT_ID'])
+    subj_ram = '/dev/shm'
 
-    if isfile(nii_file):
+    if not isfile(nii_file):
+        # FreeSurfer Command (fast and furious)
         cmd = f'recon-all -i {nii_file} ' \
               f'-s {sid} ' \
-              f'-sd {subjects_dir} ' \
+              f'-sd {subj_ram} ' \
               f'-all'
+
+        # Move folder to disk command
+        mv_cmd = f'mv -v {join(subj_ram, sid)} {subjects_dir}'
+
+        # Execute commands
         print(cmd)
+        os.system(cmd)  # Freesurfer
+        print(mv_cmd)
+        os.system(mv_cmd)   # Move folder
 
 
 if __name__ == '__main__':
     # Dataset folder
     data_folder = normpath('/data/ABIDE-II/ABIDEII/Dataset')
     subjects_dir = normpath('/home/jullygh/ABIDE_II_FS')
-    n_cores = cpu_count() // 1.25 if cpu_count() > 1 else cpu_count()
+    n_cores = int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
 
     # Data files
     subjects_csv = join(root, 'data/subjects.csv')
@@ -44,7 +55,10 @@ if __name__ == '__main__':
     print(f'Number of subjects: {df.shape[0]}')
     print(f'Number of CPUs: {n_cores}')
 
+    # Iter over rows
     subj_series = df.iterrows()
-    for cell in subj_series:
-        print(cell[1])
-    # process_subject(subj_series)
+
+    # Create a pool
+    pool = Pool(n_cores)
+    pool.map(process_subject, subj_series)
+    pool.close()
