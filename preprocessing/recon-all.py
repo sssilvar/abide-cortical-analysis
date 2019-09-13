@@ -22,10 +22,10 @@ def get_subject_nii_file(s):
 def process_subject(row):
     subject_series = row[1]  # Iterrows returns a tuple (idx, row)
     nii_file = get_subject_nii_file(subject_series)
-    sid = str(subject_series['SUBJECT_ID'])
+    sid = subject_series['SUBJECT_ID']
     subj_ram = '/dev/shm'
 
-    if not isfile(nii_file):
+    if isfile(nii_file):
         # FreeSurfer Command (fast and furious)
         cmd = f'recon-all -i {nii_file} ' \
               f'-s {sid} ' \
@@ -33,7 +33,7 @@ def process_subject(row):
               f'-all'
 
         # Move folder to disk command
-        mv_cmd = f'mv -v {join(subj_ram, sid)} {subjects_dir}'
+        mv_cmd = f'mv -v {join(subj_ram, str(sid))} {subjects_dir}'
 
         # Execute commands
         print(cmd)
