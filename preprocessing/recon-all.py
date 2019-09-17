@@ -52,7 +52,7 @@ if __name__ == '__main__':
     subjects_csv = join(root, 'data/subjects.csv')
     done_subjects_csv = join(root, 'data/done.csv')
 
-    df = pd.read_csv(subjects_csv, sep=';')
+    df = pd.read_csv(subjects_csv)
     df['DATA_FOLDER'] = data_folder
 
     # Check if done subjects
