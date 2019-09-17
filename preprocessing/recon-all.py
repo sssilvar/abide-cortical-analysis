@@ -46,7 +46,7 @@ if __name__ == '__main__':
     # Dataset folder
     data_folder = normpath('/data/ABIDE-II/ABIDEII/Dataset')
     subjects_dir = normpath('/home/jullygh/ABIDE_II_FS')
-    n_cores = int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
+    n_cores = 12 # int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
 
     # Data files
     subjects_csv = join(root, 'data/subjects.csv')
