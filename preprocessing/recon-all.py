@@ -50,8 +50,18 @@ if __name__ == '__main__':
 
     # Data files
     subjects_csv = join(root, 'data/subjects.csv')
+    done_subjects_csv = join(root, 'data/done.csv')
+
     df = pd.read_csv(subjects_csv, sep=';')
     df['DATA_FOLDER'] = data_folder
+
+    # Check if done subjects
+    if isfile(done_subjects_csv):
+        done_df = pd.read_csv(done_subjects_csv, index_col=0)
+        for ix in done_df.index:
+            row_index = df[df['SUBJECT_ID'] == ix].index
+            df.drop(row_index, axis='rows', inplace=True)
+
     print(f'Number of subjects: {df.shape[0]}')
     print(f'Number of CPUs: {n_cores}')
 
