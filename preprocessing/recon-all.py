@@ -44,9 +44,13 @@ def process_subject(row):
 
 if __name__ == '__main__':
     # Dataset folder
-    data_folder = normpath('/home/sssilvar/ABIDE')
-    subjects_dir = normpath('/home/sssilvar/data/ABIDE_FS')
-    n_cores = 20 # int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
+    # data_folder = normpath('/home/sssilvar/ABIDE')
+    # subjects_dir = normpath('/home/sssilvar/data/ABIDE_FS')
+
+    data_folder = normpath('/data/ABIDE-II/ABIDEII/Dataset')
+    subjects_dir = normpath('/home/jullygh/ABIDE_II_FS')
+
+    n_cores = 20  # int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
 
     # Data files
     subjects_csv = join(root, 'data/subjects.csv')
