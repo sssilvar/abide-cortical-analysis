@@ -44,8 +44,8 @@ def process_subject(row):
 
 if __name__ == '__main__':
     # Dataset folder
-    data_folder = normpath('/data/ABIDE-II/ABIDEII/Dataset')
-    subjects_dir = normpath('/home/jullygh/ABIDE_II_FS')
+    data_folder = normpath('/home/sssilvar/ABIDE')
+    subjects_dir = normpath('/home/sssilvar/data/ABIDE_FS')
     n_cores = 12 # int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
 
     # Data files
@@ -64,6 +64,12 @@ if __name__ == '__main__':
 
     print(f'Number of subjects: {df.shape[0]}')
     print(f'Number of CPUs: {n_cores}')
+
+    # Get confirmation
+    c = input('Confirm [Y/n]: ')
+    if c.lower() != 'Y':
+        print('Bye!')
+        exit(0)
 
     # Iter over rows
     subj_series = df.iterrows()
