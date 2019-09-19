@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # Get confirmation
     c = input('Confirm [Y/n]: ')
-    if c.lower() != 'Y':
+    if c.lower() != 'y':
         print('Bye!')
         exit(0)
 
