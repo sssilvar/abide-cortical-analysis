@@ -62,6 +62,7 @@ if __name__ == '__main__':
             row_index = df[df['SUBJECT_ID'] == ix].index
             df.drop(row_index, axis='rows', inplace=True)
 
+    print(df[['SUBJECT_ID', 'CENTRE']])
     print(f'Number of subjects: {df.shape[0]}')
     print(f'Number of CPUs: {n_cores}')
 
