@@ -44,16 +44,37 @@ def process_subject(row):
 
 if __name__ == '__main__':
     # Dataset folder
+    # data_folder = normpath('/home/sssilvar/ABIDE')
+    # subjects_dir = normpath('/home/sssilvar/data/ABIDE_FS')
+
     data_folder = normpath('/data/ABIDE-II/ABIDEII/Dataset')
     subjects_dir = normpath('/home/jullygh/ABIDE_II_FS')
-    n_cores = int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
+
+    n_cores = 20  # int(cpu_count() * 0.75) if cpu_count() > 1 else cpu_count()
 
     # Data files
     subjects_csv = join(root, 'data/subjects.csv')
-    df = pd.read_csv(subjects_csv, sep=';')
+    done_subjects_csv = join(root, 'data/done.csv')
+
+    df = pd.read_csv(subjects_csv)
     df['DATA_FOLDER'] = data_folder
+
+    # Check if done subjects
+    if isfile(done_subjects_csv):
+        done_df = pd.read_csv(done_subjects_csv, index_col=0)
+        for ix in done_df.index:
+            row_index = df[df['SUBJECT_ID'] == ix].index
+            df.drop(row_index, axis='rows', inplace=True)
+
+    print(df[['SUBJECT_ID', 'CENTRE']])
     print(f'Number of subjects: {df.shape[0]}')
     print(f'Number of CPUs: {n_cores}')
+
+    # Get confirmation
+    c = input('Confirm [Y/n]: ')
+    if c.lower() != 'y':
+        print('Bye!')
+        exit(0)
 
     # Iter over rows
     subj_series = df.iterrows()
