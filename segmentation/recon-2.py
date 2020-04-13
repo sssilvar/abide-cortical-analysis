@@ -21,7 +21,7 @@ def find_nii_files():
 def print_and_exec(cmd):
     """ Prints and executes a command in terminal """
     print(cmd)
-    # os.system(cmd)
+    os.system(cmd)
 
 
 def autorecon_2(file_path):
