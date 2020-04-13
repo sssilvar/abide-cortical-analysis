@@ -49,7 +49,7 @@ def autorecon_2(file_path):
     print_and_exec(cmd)
 
     # Remove if previously existed
-    cmd = f'rm -rf {SUBJECTS_DIR}/sid'
+    cmd = f'rm -rf {SUBJECTS_DIR}/{sid}'
     print_and_exec(cmd)
 
     # Move from /dev/shm back to disk
