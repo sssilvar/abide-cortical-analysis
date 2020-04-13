@@ -4,7 +4,7 @@ from os.path import join
 from multiprocessing import cpu_count
 
 DATASET_FOLDERS = ['/data/ABIDE-I', '/data/ABIDE-II']
-SUBJECTS_DIR = '/user/ssilvari/home/Documents/data/ABIDE_FS'
+SUBJECTS_DIR = '/home/jullygh/Datasets/ABIDE_FS'
 
 
 def find_nii_files():
