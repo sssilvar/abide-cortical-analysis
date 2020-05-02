@@ -40,9 +40,7 @@ def autorecon_2(file_path):
     #
     # 1. Normalization + brain extraction (-autorecon1)
     # 2. Segmentation (-autorecon2)
-    threads = cpu_count() // 2 # Use half of CPUs
-
-    cmd = f'recon-all -i {file_path} -s {sid} -sd /dev/shm -no-isrunning -autorecon1'
+    cmd = f'recon-all -i {file_path} -s {sid} -sd /dev/shm -no-isrunning -all'
     print_and_exec(cmd)
 
     # cmd = f'recon-all -s {sid} -sd /dev/shm -openmp {threads} -no-isrunning -autorecon2'
@@ -71,7 +69,7 @@ if __name__ == "__main__":
     nii_files = find_nii_files()
 
     # Create a pool
-    pool = Pool(5)
+    pool = Pool(35)
     pool.map(autorecon_2, nii_files)
     pool.close()
     
