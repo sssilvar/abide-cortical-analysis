@@ -1,7 +1,7 @@
 #!/bin/env python3
 import os
 from os.path import join
-from multiprocessing import cpu_count
+from multiprocessing import cpu_count, Pool
 
 DATASET_FOLDERS = ['/data/ABIDE-I', '/data/ABIDE-II']
 SUBJECTS_DIR = '/home/jullygh/Datasets/ABIDE_FS'
@@ -45,15 +45,19 @@ def autorecon_2(file_path):
     cmd = f'recon-all -i {file_path} -s {sid} -sd /dev/shm -openmp {threads} -no-isrunning -autorecon1'
     print_and_exec(cmd)
 
-    cmd = f'recon-all -s {sid} -sd /dev/shm -openmp {threads} -no-isrunning -autorecon2'
-    print_and_exec(cmd)
+    # cmd = f'recon-all -s {sid} -sd /dev/shm -openmp {threads} -no-isrunning -autorecon2'
+    # print_and_exec(cmd)
 
     # Remove if previously existed
     cmd = f'rm -rf {SUBJECTS_DIR}/{sid}'
     print_and_exec(cmd)
 
+    # Compress subject
+    cmd = f'cd /dev/shm; zip -r /dev/shm/{sid}.zip {sid}; rm -rf /dev/shm/{sid}'
+    print_and_exec(cmd)
+
     # Move from /dev/shm back to disk
-    cmd = f'mv -v /dev/shm/{sid} {SUBJECTS_DIR}'
+    cmd = f'mv -v /dev/shm/{sid}.zip {SUBJECTS_DIR}'
     print_and_exec(cmd)
 
     print()
@@ -66,8 +70,9 @@ if __name__ == "__main__":
     # Find T1 NIFTI files
     nii_files = find_nii_files()
 
-    # Run the pipeline for each file
-    for nii_file in nii_files:
-        autorecon_2(nii_file)
+    # Create a pool
+    pool = Pool(5)
+    pool.map(autorecon_2, nii_files)
+    pool.close()
     
 
