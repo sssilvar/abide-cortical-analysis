@@ -42,7 +42,7 @@ def autorecon_2(file_path):
     # 2. Segmentation (-autorecon2)
     threads = cpu_count() // 2 # Use half of CPUs
 
-    cmd = f'recon-all -i {file_path} -s {sid} -sd /dev/shm -openmp {threads} -no-isrunning -autorecon1'
+    cmd = f'recon-all -i {file_path} -s {sid} -sd /dev/shm -no-isrunning -autorecon1'
     print_and_exec(cmd)
 
     # cmd = f'recon-all -s {sid} -sd /dev/shm -openmp {threads} -no-isrunning -autorecon2'
